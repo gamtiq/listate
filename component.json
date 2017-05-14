@@ -1,0 +1,30 @@
+{
+  "name": "listate",
+  "repository": "gamtiq/listate",
+  "description": "Library for listening on changes of Redux store state.",
+  "version": "0.1.0",
+  "keywords": [
+    "redux",
+    "store",
+    "state",
+    "change",
+    "listen",
+    "listener",
+    "subscribe",
+    "subscriber",
+    "handle",
+    "handler",
+    "observe",
+    "observer",
+    "monitor",
+    "watch",
+    "watcher"
+  ],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "dist/listate.js",
+  "scripts": [
+    "dist/listate.js"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "listate",
+  "main": [
+    "dist/listate.js"
+  ],
+  "version": "0.1.0",
+  "homepage": "https://github.com/gamtiq/listate",
+  "authors": [
+    "Denis Sikuler"
+  ],
+  "description": "Library for listening on changes of Redux store state.",
+  "keywords": [
+    "redux",
+    "store",
+    "state",
+    "change",
+    "listen",
+    "listener",
+    "subscribe",
+    "subscriber",
+    "handle",
+    "handler",
+    "observe",
+    "observer",
+    "monitor",
+    "watch",
+    "watcher"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

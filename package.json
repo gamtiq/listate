@@ -1,0 +1,60 @@
+{
+  "name": "listate",
+  "version": "0.1.0",
+  "description": "Library for listening on changes of Redux store state.",
+  "homepage": "https://github.com/gamtiq/listate",
+  "main": "dist/listate.common.js",
+  "keywords": [
+    "redux",
+    "store",
+    "state",
+    "change",
+    "listen",
+    "listener",
+    "subscribe",
+    "subscriber",
+    "handle",
+    "handler",
+    "observe",
+    "observer",
+    "monitor",
+    "watch",
+    "watcher"
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "chai": "^3.5.0",
+    "cross-env": "^4.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-guard": "^0.2.0",
+    "mocha": "^3.2.0",
+    "redux": "^3.6.0",
+    "uglify-js": "^2.8.22"
+  },
+  "scripts": {
+    "build-commonjs": "cross-env BABEL_ENV=commonjs babel src/listate.js --out-file dist/listate.common.js",
+    "build-umd": "cross-env BABEL_ENV=umd babel src/listate.js --out-file dist/listate.js",
+    "build": "npm run build-commonjs && npm run build-umd",
+    "lint": "eslint --cache --max-warnings 0 \"**/*.js\"",
+    "lint-error": "eslint --cache \"**/*.js\"",
+    "lint-all": "eslint --max-warnings 0 \"**/*.js\"",
+    "lint-all-error": "eslint \"**/*.js\"",
+    "test": "mocha --compilers js:babel-register \"test/**/*.js\"",
+    "check": "npm run lint && npm test",
+    "check-all": "npm run lint-all && npm test"
+  },
+  "author": {
+    "name": "Denis Sikuler"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gamtiq/listate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gamtiq/listate/issues"
+  },
+  "license": "MIT"
+}
