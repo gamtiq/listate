@@ -49,6 +49,20 @@ function baseWhen(state, prevState) {
 /**
  * Add/register state change listener for the given store.
  *
+ * @example
+ * import listen from 'listate';
+ *
+ * const store = createStore(reducer, initState);
+ *
+ * listen(store, {
+ *     filter: (state) => state.section,
+ *     when: (current, prev) => current !== prev && current !== 'exit',
+ *     callback: (data) => {
+ *         // data.current === state.section
+ *         localStorage.setItem('selectedSection', data.current);
+ *     }
+ * });
+ *
  * @param {Store} store
  *      Store for which listener should be added/registered.
  * @param {Function | object} listener
@@ -66,9 +80,9 @@ function baseWhen(state, prevState) {
  *      The listener will be called if the function returns true.
  *      The following parameters will be passed into the function:
  *
- *      * the current state or a part of the current state if `filter` is set.
- *      * the previous state or a part of the previous state if `filter` is set.
- *      * an object that will be passed into listener.
+ *    * the current state or a part of the current state if `filter` is set.
+ *    * the previous state or a part of the previous state if `filter` is set.
+ *    * an object that will be passed into listener.
  *
  * @return {Function}
  *      A function that removes/unsubscribes the listener.
@@ -105,3 +119,5 @@ function listen(store, listener) {
 }
 
 exports.listen = listen;
+
+//# sourceMappingURL=listate.common.js.map

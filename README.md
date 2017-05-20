@@ -25,7 +25,7 @@ Library to listen/observe/watch changes of Redux store state.
 
 ### AMD, &lt;script&gt;
 
-Use `dist/listate.js`.
+Use `dist/listate.js` or `dist/listate.min.js` (minified version).
 
 ## Usage <a name="usage"></a> [&#x2191;](#start)
 
@@ -199,6 +199,8 @@ An object with the following fileds will be passed as parameter into the listene
 * `store: object` - The store for which listener is registered.
 * `dispatch: Function` - Reference to `dispatch` method of the store.
 * `unlisten: Function` - The function that removes/unsubscribes the listener.
+
+See `doc` folder for details.
 
 ## Contributing <a name="contributing"></a> [&#x2191;](#start)
 In lieu of a formal styleguide, take care to maintain the existing coding style.
