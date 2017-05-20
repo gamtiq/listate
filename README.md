@@ -3,6 +3,7 @@
 Library to listen/observe/watch changes of Redux store state.
 
 [![NPM version](https://badge.fury.io/js/listate.png)](http://badge.fury.io/js/listate)
+[![Build Status](https://secure.travis-ci.org/gamtiq/listate.png?branch=master)](http://travis-ci.org/gamtiq/listate)
 
 ## Table of contents
 
