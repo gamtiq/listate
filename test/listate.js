@@ -95,8 +95,8 @@ describe('listate', function listateTestSuite() {
                                     : []);
             const len = actionList.length;
 
-            if (settings.listener && ! settings.listener.callback) {
-                settings.listener.callback = baseListener;
+            if (settings.listener && ! settings.listener.handle) {
+                settings.listener.handle = baseListener;
             }
             listen(store, settings.listener || baseListener);
 
@@ -164,7 +164,7 @@ describe('listate', function listateTestSuite() {
 
             check({
                 listener: {
-                    callback: obj.handle,
+                    handle: obj.handle,
                     context: obj
                 },
                 action: {
@@ -179,12 +179,14 @@ describe('listate', function listateTestSuite() {
         });
 
         it('should pass parameter to listener', () => {
+            const suppData = {};
             let param;
 
             check({
                 listener: {
+                    data: suppData,
                     filter: (state) => state.counter,
-                    callback: (data) => {
+                    handle: (data) => {
                         param = data;
                     },
                 },
@@ -227,6 +229,8 @@ describe('listate', function listateTestSuite() {
                         a: 1
                     }
                 } );
+            expect( param.data )
+                .equal( suppData );
             expect( param.dispatch )
                 .a( 'function' );
             expect( param.unlisten )
@@ -242,7 +246,7 @@ describe('listate', function listateTestSuite() {
 
             const { store } = check({
                 listener: {
-                    callback: (data) => {
+                    handle: (data) => {
                         baseListener();
                         counter = data.state.counter;
                         if (counter < 2) {
@@ -281,10 +285,10 @@ describe('listate', function listateTestSuite() {
                 .equal( counter );
         });
 
-        it('should remove listener in callback', () => {
+        it('should remove listener in handle', () => {
             check({
                 listener: {
-                    callback: (data) => {
+                    handle: (data) => {
                         baseListener();
                         if (data.state.counter) {
                             data.unlisten();
@@ -337,7 +341,7 @@ describe('listate', function listateTestSuite() {
                                 v: 1
                             };
                         },
-                        callback: (data) => {
+                        handle: (data) => {
                             baseListener();
                             part = data.current;
                         },

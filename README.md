@@ -102,22 +102,23 @@ function reducer(state, action) {
 const store = createStore(reducer, initState);
 
 listen(store, {
+    data: 'main',
     filter: (state) => state.user,
-    callback: (data) => {
+    handle: (data) => {
         // One-time listener
         data.unlisten();
         // Dispatch any action
         data.dispatch({
             type: 'SELECT_SECTION',
-            // data.current === state.user
-            payload: data.current.favoriteSection || localStorage.getItem('selectedSection') || 'main'
+            // data.current === state.user, data.data === 'main'
+            payload: data.current.favoriteSection || localStorage.getItem('selectedSection') || data.data
         });
     }
 });
 listen(store, {
     filter: (state) => state.section,
     when: (current, prev) => current !== prev && current !== 'exit',
-    callback: (data) => {
+    handle: (data) => {
         // data.current === state.section
         localStorage.setItem('selectedSection', data.current);
     }
@@ -125,7 +126,7 @@ listen(store, {
 listen(store, {
     filter: (state) => state.map,
     when: (current, prev, data) => current.stat && data.state.user && data.state.section === 'video',
-    callback: (data) => {
+    handle: (data) => {
         console.log('data.prev:', data.prev);   // {main: {}}
         console.log('data.current:', data.current);   // {main: {}, stat: {a: 1}}
         
@@ -162,7 +163,7 @@ store.dispatch({
 
 ### baseWhen(state, prevState): boolean
 
-Checks whether current value (state) is no equal previous value (state).
+Checks whether current value (state) is not equal previous value (state).
 
 Returns value of the following comparison: `state !== prevState`.
 
@@ -175,8 +176,9 @@ Arguments:
 * `store: object` - Store for which listener should be added/registered.
 * `listener: Function | object` - Specifies listener that should be called on a state change.
 Can be a function or an object that defines listener settings/details.
-* `listener.callback: Function` - Listener that should be called on a state change.
+* `listener.handle: Function` - Listener that should be called on a state change.
 * `listener.context: object` (optional) - Object that should be used as `this` value when calling the listener.
+* `listener.data: any` (optional) - Any data that should be passed into the listener.
 * `listener.filter: (state) => state.part` (optional) - Function (selector) to extract state part
 which will be used inside `when` to determine whether the listener should be called.
 By default the entire state will be used.
@@ -197,6 +199,7 @@ An object with the following fileds will be passed as parameter into the listene
 * `prev: any` - The previous state or a part of the previous state if `filter` is set.
 * `state: object` - The current state.
 * `prevState: object` - The previous state.
+* `data: any` - The auxiliary data (value of `listener.data` parameter).
 * `store: object` - The store for which listener is registered.
 * `dispatch: Function` - Reference to `dispatch` method of the store.
 * `unlisten: Function` - The function that removes/unsubscribes the listener.

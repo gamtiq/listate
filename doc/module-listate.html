@@ -137,7 +137,7 @@
             <td class="type">
             
                 
-<span class="param-type">Store</span>
+<span class="param-type"><a href="module-listate.html#~Store">module:listate~Store</a></span>
 
 
 
@@ -206,7 +206,7 @@
 
         <tr>
             
-                <td class="name"><code>callback</code></td>
+                <td class="name"><code>handle</code></td>
             
 
             <td class="type">
@@ -274,6 +274,44 @@
             
 
             <td class="description last"><p>Object that should be used as <code>this</code> value when calling the listener.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">any</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Any data that should be passed into the listener.</p></td>
         </tr>
 
     
@@ -413,7 +451,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="listate.js.html">listate.js</a>,
-				 <a href="listate.js.html#sunlight-1-line-85">line 85</a>
+				 <a href="listate.js.html#sunlight-1-line-110">line 110</a>
 			</li>
 		</ul>
 	</dd>
@@ -466,7 +504,7 @@
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">import listen from &#x27;listate&#x27;;const store = createStore(reducer, initState);listen(store, {    filter: (state) =&gt; state.section,    when: (current, prev) =&gt; current !== prev &amp;&amp; current !== &#x27;exit&#x27;,    callback: (data) =&gt; {        // data.current === state.section        localStorage.setItem(&#x27;selectedSection&#x27;, data.current);    }});</pre>
+    <pre class="sunlight-highlight-javascript">import listen from &#x27;listate&#x27;;const store = createStore(reducer, initState);listen(store, {    filter: (state) =&gt; state.section,    when: (current, prev) =&gt; current !== prev &amp;&amp; current !== &#x27;exit&#x27;,    handle: (data) =&gt; {        // data.current === state.section        localStorage.setItem(&#x27;selectedSection&#x27;, data.current);    }});</pre>
 
 
     
@@ -503,7 +541,7 @@
 
     
     <div class="description">
-        <p>Check whether current value (state) is no equal previous value (state).</p>
+        <p>Check whether current value (state) is not equal previous value (state).</p>
 <p>Uses <code>!==</code> for comparison.</p>
     </div>
     
@@ -625,7 +663,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="listate.js.html">listate.js</a>,
-				 <a href="listate.js.html#sunlight-1-line-40">line 40</a>
+				 <a href="listate.js.html#sunlight-1-line-63">line 63</a>
 			</li>
 		</ul>
 	</dd>
@@ -654,7 +692,7 @@
     
             
 <div class="param-desc">
-    <p><code>true</code> if current value is no equal previous value.</p>
+    <p><code>true</code> if current value is not equal previous value.</p>
 </div>
 
 
@@ -685,6 +723,308 @@
         <h3 class="subsection-title">Type Definitions</h3>
 
         <dl>
+                
+<hr>
+<dt class="name" id="~HandleParam">
+    <h4 id="~HandleParam">HandleParam</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Parameter that is passed when calling the listener.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>current</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">any</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The current state or a part of the current state if <code>filter</code> is set.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">any</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The auxiliary data (value of <code>listener.data</code> parameter).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dispatch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Reference to <code>dispatch</code> method of the store.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prev</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">any</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The previous state or a part of the previous state if <code>filter</code> is set.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prevState</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The previous state.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>state</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The current state.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>store</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-listate.html#~Store">module:listate~Store</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The store for which listener is registered.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>unlisten</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The function that removes/unsubscribes the listener.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="listate.js.html">listate.js</a>,
+				 <a href="listate.js.html#sunlight-1-line-28">line 28</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
                 
 <hr>
 <dt class="name" id="~Store">
@@ -918,7 +1258,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-05-21T00:38:18+03:00
+		on 2017-05-26T23:35:37+03:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

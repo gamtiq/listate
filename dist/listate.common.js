@@ -31,6 +31,29 @@ exports.default = listen;
  */
 
 /**
+ * Parameter that is passed when calling the listener.
+ *
+ * @typedef {Object} HandleParam
+ *
+ * @property {any} current
+ *      The current state or a part of the current state if `filter` is set.
+ * @property {any} data
+ *      The auxiliary data (value of `listener.data` parameter).
+ * @property {Function} dispatch
+ *      Reference to `dispatch` method of the store.
+ * @property {any} prev
+ *      The previous state or a part of the previous state if `filter` is set.
+ * @property {object} prevState
+ *      The previous state.
+ * @property {object} state
+ *      The current state.
+ * @property {Store} store
+ *      The store for which listener is registered.
+ * @property {Function} unlisten
+ *      The function that removes/unsubscribes the listener.
+ */
+
+/**
  * Check whether current value (state) is no equal previous value (state).
  *
  * Uses `!==` for comparison.
@@ -57,7 +80,7 @@ function baseWhen(state, prevState) {
  * listen(store, {
  *     filter: (state) => state.section,
  *     when: (current, prev) => current !== prev && current !== 'exit',
- *     callback: (data) => {
+ *     handle: (data) => {
  *         // data.current === state.section
  *         localStorage.setItem('selectedSection', data.current);
  *     }
@@ -68,10 +91,12 @@ function baseWhen(state, prevState) {
  * @param {Function | object} listener
  *      Specifies listener that should be called on a state change.
  *      Can be a function or an object that defines listener settings/details.
- * @param {Function} listener.callback
+ * @param {Function} listener.handle
  *      Listener that should be called on a state change.
  * @param {object} [listener.context]
  *      Object that should be used as `this` value when calling the listener.
+ * @param {any} [listener.data]
+ *      Any data that should be passed into the listener.
  * @param {Function} [listener.filter=(state) => state]
  *      Function (selector) to extract state part which will be used inside `when` to determine
  *      whether the listener should be called. By default the entire state will be used.
@@ -88,30 +113,35 @@ function baseWhen(state, prevState) {
  *      A function that removes/unsubscribes the listener.
  */
 function listen(store, listener) {
-    var settings = typeof listener === 'function' ? { callback: listener } : listener;
-    var callback = settings.callback,
+    var settings = typeof listener === 'function' ? { handle: listener } : listener;
+    var handle = settings.handle,
         context = settings.context,
+        data = settings.data,
         filter = settings.filter;
 
     var when = settings.when || baseWhen;
     var prevState = store.getState();
+    var prev = filter ? filter(prevState) : prevState;
 
     var unlisten = store.subscribe(function () {
         var state = store.getState();
         var current = filter ? filter(state) : state;
-        var prev = filter ? filter(prevState) : prevState;
         var param = {
             current: current,
             prev: prev,
             state: state,
             prevState: prevState,
+            data: data,
             store: store,
             dispatch: store.dispatch,
             unlisten: unlisten
         };
         prevState = state;
-        if (when(current, prev, param) && callback) {
-            callback.call(context || null, param);
+        if (when(current, prev, param) && handle) {
+            prev = current;
+            handle.call(context || null, param);
+        } else {
+            prev = current;
         }
     });
 
