@@ -1,6 +1,6 @@
 {
   "name": "listate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Library for listening on changes of Redux store state.",
   "homepage": "https://github.com/gamtiq/listate",
   "main": "dist/listate.common.js",
@@ -34,7 +34,8 @@
     "jsdoc": "^3.4.3",
     "mocha": "^3.2.0",
     "redux": "^3.6.0",
-    "uglify-js": "^3.0.5"
+    "uglify-js": "^3.0.5",
+    "version-bump-prompt": "^3.1.0"
   },
   "scripts": {
     "lint": "eslint --cache --max-warnings 0 \"**/*.js\"",
@@ -49,7 +50,10 @@
     "build-umd": "cross-env BABEL_ENV=umd babel src/listate.js --out-file dist/listate.js --source-maps",
     "minify": "uglifyjs dist/listate.js --output dist/listate.min.js --compress --mangle --source-map content=\"dist/listate.js.map\",url=listate.min.js.map",
     "build": "npm run build-commonjs && npm run build-umd && npm run minify",
-    "all": "npm run check-all && npm run doc && npm run build"
+    "all": "npm run check-all && npm run doc && npm run build",
+    "release": "bump --patch --commit --tag --all",
+    "release-minor": "bump --minor --commit --tag --all",
+    "release-major": "bump --major --commit --tag --all"
   },
   "author": {
     "name": "Denis Sikuler"

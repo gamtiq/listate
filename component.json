@@ -2,7 +2,7 @@
   "name": "listate",
   "repository": "gamtiq/listate",
   "description": "Library for listening on changes of Redux store state.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "redux",
     "store",
