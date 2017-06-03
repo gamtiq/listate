@@ -1,6 +1,6 @@
 {
   "name": "listate",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Library for listening on changes of Redux store state.",
   "homepage": "https://github.com/gamtiq/listate",
   "main": "dist/listate.common.js",
