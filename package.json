@@ -51,9 +51,9 @@
     "minify": "uglifyjs dist/listate.js --output dist/listate.min.js --compress --mangle --source-map content=\"dist/listate.js.map\",url=listate.min.js.map",
     "build": "npm run build-commonjs && npm run build-umd && npm run minify",
     "all": "npm run check-all && npm run doc && npm run build",
-    "release": "bump --patch --commit --tag --all",
-    "release-minor": "bump --minor --commit --tag --all",
-    "release-major": "bump --major --commit --tag --all"
+    "release": "bump --patch --commit --tag --all --push",
+    "release-minor": "bump --minor --commit --tag --all --push",
+    "release-major": "bump --major --commit --tag --all --push"
   },
   "author": {
     "name": "Denis Sikuler"

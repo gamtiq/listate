@@ -118,9 +118,12 @@ listen(store, {
 listen(store, {
     filter: (state) => state.section,
     when: (current, prev) => current !== prev && current !== 'exit',
+    // Call the listener no more frequently than once per second
+    delay: 1000,
     handle: (data) => {
         // data.current === state.section
         localStorage.setItem('selectedSection', data.current);
+        console.log('Saved section: ', data.current);
     }
 });
 listen(store, {
@@ -155,7 +158,7 @@ store.dispatch({
 ...
 store.dispatch({
     type: 'SELECT_SECTION',
-    payload: 'main'
+    payload: 'news'
 });
 ```
 
@@ -179,6 +182,9 @@ Can be a function or an object that defines listener settings/details.
 * `listener.handle: Function` - Listener that should be called on a state change.
 * `listener.context: object` (optional) - Object that should be used as `this` value when calling the listener.
 * `listener.data: any` (optional) - Any data that should be passed into the listener.
+* `listener.delay: number` (optional) - Specifies that listener should be called after the given number of milliseconds
+have elapsed. Works similar to `debounce`: when several requests for the listener call arrive during the specified period
+only the last one will be applied after the timeout.
 * `listener.filter: (state) => state.part` (optional) - Function (selector) to extract state part
 which will be used inside `when` to determine whether the listener should be called.
 By default the entire state will be used.

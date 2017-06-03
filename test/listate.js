@@ -533,5 +533,148 @@ describe('listate', function listateTestSuite() {
                 });
             });
         });
+
+        describe('listen(store, {delay: number, ...})', () => {
+            it('should call listener after specified delay', (done) => {
+                check({
+                    listener: {
+                        delay: 200
+                    },
+                    action: {
+                        type: 'INC'
+                    },
+                });
+
+                setTimeout(() => {
+                    expect( getListenerCounter() )
+                        .equal( 1 );
+                    done();
+                }, 300);
+            });
+
+            it('should cancel scheduled listener call and slate another call', (done) => {
+                const { store } = check({
+                    listener: {
+                        delay: 300
+                    },
+                    action: {
+                        type: 'INC'
+                    },
+                });
+
+                setTimeout(() => {
+                    expect( getListenerCounter() )
+                        .equal( 0 );
+                    store.dispatch({type: 'INC'});
+                }, 100);
+
+                setTimeout(() => {
+                    expect( getListenerCounter() )
+                        .equal( 0 );
+                }, 350);
+
+                setTimeout(() => {
+                    expect( getListenerCounter() )
+                        .equal( 1 );
+                    done();
+                }, 500);
+            });
+
+            it('should call listener once', (done) => {
+                const { store } = check({
+                    listener: {
+                        delay: 200
+                    },
+                    action: {
+                        type: 'INC'
+                    },
+                });
+
+                setTimeout(() => {
+                    store.dispatch({type: 'INC'});
+                }, 100);
+
+                setTimeout(() => {
+                    store.dispatch({type: 'INC'});
+                }, 200);
+
+                setTimeout(() => {
+                    store.dispatch({type: 'INC'});
+                }, 300);
+
+                setTimeout(() => {
+                    store.dispatch({type: 'INC'});
+                }, 400);
+
+                setTimeout(() => {
+                    expect( getListenerCounter() )
+                        .equal( 1 );
+                    done();
+                }, 700);
+            });
+
+            it('should call listener with fixed parameter', (done) => {
+                let param;
+
+                const { store } = check({
+                    listener: {
+                        filter: (state) => state.counter,
+                        when: (current) => current < 3,
+                        handle: (data) => {
+                            baseListener();
+                            param = data;
+                        },
+                        delay: 200,
+                    },
+                    action: {
+                        type: 'INC'
+                    },
+                });
+
+                setTimeout(() => {
+                    store.dispatch({type: 'INC'});
+                }, 100);
+
+                setTimeout(() => {
+                    store.dispatch({type: 'INC'});
+                }, 200);
+
+                setTimeout(() => {
+                    store.dispatch({type: 'INC'});
+                }, 250);
+
+                setTimeout(() => {
+                    expect( store.getState().counter )
+                        .equal( 4 );
+                    expect( getListenerCounter() )
+                        .equal( 1 );
+                    
+                    // eslint-disable-next-line no-unused-expressions
+                    expect( param )
+                        .a( 'object' )
+                        .and.not['null'];
+                    expect( param.current )
+                        .equal( 2 );
+                    expect( param.prev )
+                        .equal( 1 );
+                    expect( param.state )
+                        .eql( {
+                            counter: 2,
+                            data: initState.data,
+                            map: initState.map
+                        } );
+                    expect( param.prevState )
+                        .eql( {
+                            counter: 1,
+                            data: initState.data,
+                            map: initState.map
+                        } );
+                    expect( param.store )
+                        .equal( store );
+                    
+                    done();
+                }, 400);
+            });
+        });
     });
 });

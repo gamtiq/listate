@@ -11,6 +11,8 @@ exports.default = listen;
  * Licensed under the MIT license.
  */
 
+/* global clearTimeout, setTimeout */
+
 /**
  * Library for listening on changes of Redux store state.
  * 
@@ -47,14 +49,14 @@ exports.default = listen;
  *      The previous state.
  * @property {object} state
  *      The current state.
- * @property {Store} store
+ * @property {module:listate~Store} store
  *      The store for which listener is registered.
  * @property {Function} unlisten
  *      The function that removes/unsubscribes the listener.
  */
 
 /**
- * Check whether current value (state) is no equal previous value (state).
+ * Check whether current value (state) is not equal previous value (state).
  *
  * Uses `!==` for comparison.
  *
@@ -63,10 +65,17 @@ exports.default = listen;
  * @param {object} prevState
  *      A previous value (state).
  * @return {boolean}
- *      `true` if current value is no equal previous value.
+ *      `true` if current value is not equal previous value.
  */
 function baseWhen(state, prevState) {
     return state !== prevState;
+}
+
+// eslint-disable-next-line require-jsdoc
+function run(func, context, param) {
+    return function () {
+        func.call(context, param);
+    };
 }
 
 /**
@@ -80,13 +89,14 @@ function baseWhen(state, prevState) {
  * listen(store, {
  *     filter: (state) => state.section,
  *     when: (current, prev) => current !== prev && current !== 'exit',
+ *     delay: 1000,
  *     handle: (data) => {
  *         // data.current === state.section
  *         localStorage.setItem('selectedSection', data.current);
  *     }
  * });
  *
- * @param {Store} store
+ * @param {module:listate~Store} store
  *      Store for which listener should be added/registered.
  * @param {Function | object} listener
  *      Specifies listener that should be called on a state change.
@@ -97,6 +107,11 @@ function baseWhen(state, prevState) {
  *      Object that should be used as `this` value when calling the listener.
  * @param {any} [listener.data]
  *      Any data that should be passed into the listener.
+ * @param {number} [listener.delay]
+ *      Specifies that listener should be called after the given number of milliseconds have elapsed.
+ *      Works similar to `debounce`: when several requests for the listener call arrive during the specified period
+ *      only the last one will be applied after the timeout.
+ *      `0` is acceptable value. Negative number means that the listener should be called without delay.
  * @param {Function} [listener.filter=(state) => state]
  *      Function (selector) to extract state part which will be used inside `when` to determine
  *      whether the listener should be called. By default the entire state will be used.
@@ -115,13 +130,15 @@ function baseWhen(state, prevState) {
 function listen(store, listener) {
     var settings = typeof listener === 'function' ? { handle: listener } : listener;
     var handle = settings.handle,
-        context = settings.context,
         data = settings.data,
         filter = settings.filter;
 
+    var context = settings.context || null;
+    var delay = typeof settings.delay === 'number' ? settings.delay : -1;
     var when = settings.when || baseWhen;
     var prevState = store.getState();
     var prev = filter ? filter(prevState) : prevState;
+    var timeoutId = void 0;
 
     var unlisten = store.subscribe(function () {
         var state = store.getState();
@@ -139,7 +156,12 @@ function listen(store, listener) {
         prevState = state;
         if (when(current, prev, param) && handle) {
             prev = current;
-            handle.call(context || null, param);
+            if (delay < 0) {
+                handle.call(context, param);
+            } else {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(run(handle, context, param), delay);
+            }
         } else {
             prev = current;
         }

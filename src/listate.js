@@ -6,6 +6,8 @@
  * Licensed under the MIT license.
  */
 
+/* global clearTimeout, setTimeout */
+
 /**
  * Library for listening on changes of Redux store state.
  * 
@@ -64,6 +66,13 @@ export function baseWhen(state, prevState) {
     return state !== prevState;
 }
 
+// eslint-disable-next-line require-jsdoc
+function run(func, context, param) {
+    return () => {
+        func.call(context, param);
+    };
+}
+
 /**
  * Add/register state change listener for the given store.
  *
@@ -75,6 +84,7 @@ export function baseWhen(state, prevState) {
  * listen(store, {
  *     filter: (state) => state.section,
  *     when: (current, prev) => current !== prev && current !== 'exit',
+ *     delay: 1000,
  *     handle: (data) => {
  *         // data.current === state.section
  *         localStorage.setItem('selectedSection', data.current);
@@ -92,6 +102,12 @@ export function baseWhen(state, prevState) {
  *      Object that should be used as `this` value when calling the listener.
  * @param {any} [listener.data]
  *      Any data that should be passed into the listener.
+ * @param {number} [listener.delay]
+ *      Specifies that listener should be called after the given number of milliseconds have elapsed.
+ *      Works similar to `debounce`: when several requests for the listener call arrive during the specified period
+ *      only the last one will be applied after the timeout.
+ *      `0` is acceptable value that means the listener should be called asynchronuosly.
+ *      Negative number means that the listener should be called without delay.
  * @param {Function} [listener.filter=(state) => state]
  *      Function (selector) to extract state part which will be used inside `when` to determine
  *      whether the listener should be called. By default the entire state will be used.
@@ -111,12 +127,17 @@ export default function listen(store, listener) {
     const settings = typeof listener === 'function'
                         ? {handle: listener}
                         : listener;
-    const { handle, context, data, filter } = settings;
+    const { handle, data, filter } = settings;
+    const context = settings.context || null;
+    const delay = typeof settings.delay === 'number'
+                    ? settings.delay
+                    : -1;
     const when = settings.when || baseWhen;
     let prevState = store.getState();
     let prev = filter
                     ? filter(prevState)
                     : prevState;
+    let timeoutId;
     
     const unlisten = store.subscribe(() => {
         const state = store.getState();
@@ -136,7 +157,13 @@ export default function listen(store, listener) {
         prevState = state;
         if (when(current, prev, param) && handle) {
             prev = current;
-            handle.call(context || null, param);
+            if (delay < 0) {
+                handle.call(context, param);
+            }
+            else {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(run(handle, context, param), delay);
+            }
         }
         else {
             prev = current;
