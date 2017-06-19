@@ -124,7 +124,8 @@
      *      Specifies that listener should be called after the given number of milliseconds have elapsed.
      *      Works similar to `debounce`: when several requests for the listener call arrive during the specified period
      *      only the last one will be applied after the timeout.
-     *      `0` is acceptable value. Negative number means that the listener should be called without delay.
+     *      `0` is acceptable value that means the listener should be called asynchronuosly.
+     *      Negative number means that the listener should be called without delay.
      * @param {Function} [listener.filter=(state) => state]
      *      Function (selector) to extract state part which will be used inside `when` to determine
      *      whether the listener should be called. By default the entire state will be used.
@@ -139,6 +140,7 @@
      *
      * @return {Function}
      *      A function that removes/unsubscribes the listener.
+     * @alias module:listate.listen
      */
     function listen(store, listener) {
         var settings = typeof listener === 'function' ? { handle: listener } : listener;
@@ -185,5 +187,4 @@
 
     exports.listen = listen;
 });
-
 //# sourceMappingURL=listate.js.map

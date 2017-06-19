@@ -122,6 +122,7 @@ function run(func, context, param) {
  *
  * @return {Function}
  *      A function that removes/unsubscribes the listener.
+ * @alias module:listate.listen
  */
 export default function listen(store, listener) {
     const settings = typeof listener === 'function'

@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-listate.html">listate</a></li>
+					<li><a href="module-listate.html">listate</a></li><li><a href="module-listate_extra.html">listate/extra</a></li>
 				</ul>
 			</li>
 			
@@ -97,16 +97,30 @@
 <li><a href="#contributing">Contributing</a></li>
 <li><a href="#license">License</a></li>
 </ul>
-<h2>Installation <a name="install"></a> <a href="#start">&#x2191;</a></h2><h3>Node</h3><pre class="prettyprint source"><code>npm install listate</code></pre><h3><a href="http://bower.io">Bower</a></h3><pre class="prettyprint source"><code>bower install listate</code></pre><h3>AMD, &lt;script&gt;</h3><p>Use <code>dist/listate.js</code> or <code>dist/listate.min.js</code> (minified version).</p>
-<h2>Usage <a name="usage"></a> <a href="#start">&#x2191;</a></h2><h3>ECMAScript 6</h3><pre class="prettyprint source lang-js"><code>import listen from 'listate';</code></pre><h3>Node</h3><pre class="prettyprint source lang-js"><code>const listen = require('listate').listen;</code></pre><h3><a href="http://duojs.org">Duo</a></h3><pre class="prettyprint source lang-js"><code>const listen = require('gamtiq/listate').listen;</code></pre><h3>AMD</h3><pre class="prettyprint source lang-js"><code>define(['path/to/dist/listate.js'], function(listate) {
+<h2>Installation <a name="install"></a> <a href="#start">&#x2191;</a></h2><h3>Node</h3><pre class="prettyprint source"><code>npm install listate</code></pre><h3><a href="http://bower.io">Bower</a></h3><pre class="prettyprint source"><code>bower install listate</code></pre><h3>AMD, &lt;script&gt;</h3><p>Use <code>dist/listate.js</code> or <code>dist/listate.min.js</code> (minified version).
+Use <code>dist/extra.js</code> or <code>dist/extra.min.js</code> (minified version) to apply extra functions.</p>
+<h2>Usage <a name="usage"></a> <a href="#start">&#x2191;</a></h2><h3>ECMAScript 6</h3><pre class="prettyprint source lang-js"><code>import listen from 'listate';
+// Or if you need extra functionality
+import extListen from 'listate/extra';</code></pre><h3>Node</h3><pre class="prettyprint source lang-js"><code>const listen = require('listate').listen;
+// Or if you need extra functionality
+const extListen = require('listate/extra').listen;</code></pre><h3><a href="http://duojs.org">Duo</a></h3><pre class="prettyprint source lang-js"><code>const listen = require('gamtiq/listate').listen;
+// Or if you need extra functionality
+const extListen = require('gamtiq/listate/extra').listen;</code></pre><h3>AMD</h3><pre class="prettyprint source lang-js"><code>define(['path/to/dist/listate.js', 'path/to/dist/extra.js'], function(listate, extra) {
     const listen = listate.listen;
-});</code></pre><h3>Bower, &lt;script&gt;</h3><pre class="prettyprint source lang-html"><code>&lt;!-- Use bower_components/listate/dist/listate.js if the library was installed by Bower -->
+    // Import extra.js if you need extra functionality
+    const extListen = extra.listen;
+});</code></pre><h3>Bower, &lt;script&gt;</h3><pre class="prettyprint source lang-html"><code>&lt;!-- Use bower_components/listate/dist/listate.js and bower_components/listate/dist/extra.js if the library was installed by Bower -->
 &lt;script type=&quot;text/javascript&quot; src=&quot;path/to/dist/listate.js&quot;>&lt;/script>
+&lt;!-- Or if you need extra functionality -->
+&lt;script type=&quot;text/javascript&quot; src=&quot;path/to/dist/extra.js&quot;>&lt;/script>
 &lt;script type=&quot;text/javascript&quot;>
     // listate is available via listate field of window object
     const listen = listate.listen;
+    // Extra functionality is available inside extra namespace
+    const extListen = listate.extra.listen;
 &lt;/script></code></pre><h3>Examples <a name="examples"></a> <a href="#start">&#x2191;</a></h3><pre class="prettyprint source lang-js"><code>import { createStore } from 'redux';
 import listen from 'listate';
+import extListen from 'listate/extra';
 
 const initState = {
     user: null,
@@ -170,6 +184,14 @@ listen(store, {
 
     }
 });
+extListen(store, {
+    filter: {s: 'section', main: 'map.main'},
+    handle: (data) => {
+        console.log('extListen: data.prev -', data.prev);
+        console.log('extListen: data.current -', data.current);
+
+    }
+});
 ...
 store.dispatch({
     type: 'AUTH',
@@ -194,9 +216,19 @@ store.dispatch({
 store.dispatch({
     type: 'SELECT_SECTION',
     payload: 'news'
-});</code></pre><h2>API <a name="api"></a> <a href="#start">&#x2191;</a></h2><h3>baseWhen(state, prevState): boolean</h3><p>Checks whether current value (state) is not equal previous value (state).</p>
+});
+...
+store.dispatch({
+    type: 'SET_SECTION',
+    payload: {
+        key: 'main',
+        value: {
+            content: 'text'
+        }
+    }
+});</code></pre><h2>API <a name="api"></a> <a href="#start">&#x2191;</a></h2><h3>Base functionality (listate, dist/listate.js)</h3><h4>baseWhen(state, prevState): boolean</h4><p>Checks whether current value (state) is not equal previous value (state).</p>
 <p>Returns value of the following comparison: <code>state !== prevState</code>.</p>
-<h3>listen(store, listener): Function</h3><p>Adds/registers state change listener for the given store.</p>
+<h4>listen(store, listener): Function</h4><p>Adds/registers state change listener for the given store.</p>
 <p>Arguments:</p>
 <ul>
 <li><code>store: object</code> - Store for which listener should be added/registered.</li>
@@ -234,6 +266,79 @@ The following parameters will be passed into the function:</p>
 <li><code>dispatch: Function</code> - Reference to <code>dispatch</code> method of the store.</li>
 <li><code>unlisten: Function</code> - The function that removes/unsubscribes the listener.</li>
 </ul>
+<h3>Extra functionality (listate/extra, dist/extra.js)</h3><h4>getPathValue(obj, path): any</h4><p>Return value of specified field path inside given object.</p>
+<pre class="prettyprint source lang-js"><code>import { getPathValue } from 'listate/extra';
+const obj = {
+    a: {
+        b: {
+           c: 'value'
+        },
+        d: true
+    },
+    e: 4,
+    f: [1, 'z', null]
+};
+getPathValue(obj, 'a.b.c');   // 'value'
+getPathValue(obj, 'a.c');   // undefined</code></pre><h4>getObjectPart(source, parts): object</h4><p>Create an object containing specified parts of the given object.</p>
+<pre class="prettyprint source lang-js"><code>import { getObjectPart } from 'listate/extra';
+const obj = {
+    a: {
+        b: {
+           c: 'value',
+           d: true
+        },
+        e: 4,
+        f: [1, 'z', null]
+    },
+    g: 7,
+    h: {
+        i: false,
+        j: 0
+    },
+    k: 'king',
+    l: 'last'
+};
+getObjectPart(obj, {f1: 'a.b.d', f2: 'a.f.1', f3: 'g', f4: 'h.j'});   // {f1: true, f2: 'z', f3: 7, f4: 0}</code></pre><h4>getFieldFilter(path): Function</h4><p>Return a function that extracts value of the specified field path inside a given object.</p>
+<pre class="prettyprint source lang-js"><code>import { getFieldFilter } from 'listate/extra';
+const filter = getFieldFilter('a.d');
+const obj = {
+    a: {
+        b: {
+           c: 'value'
+        },
+        d: 17
+    },
+    e: 4,
+    f: [1, 'z', null]
+};
+filter(obj);   // 17</code></pre><h4>getPartFilter(parts): Function</h4><p>Return a function that creates an object containing the specified parts of a given object.</p>
+<pre class="prettyprint source lang-js"><code>import { getPartFilter } from 'listate/extra';
+const filter = getPartFilter({f1: 'a.b.c', f2: 'h.j', f3: 'k'});
+const obj = {
+    a: {
+        b: {
+           c: 'value',
+           d: true
+        },
+        e: 4,
+        f: [1, 'z', null]
+    },
+    g: 7,
+    h: {
+        i: false,
+        j: 0
+    },
+    k: 'king',
+    l: 'last'
+};
+filter(obj);   // {f1: 'value', f2: 0, f3: 'king'}</code></pre><h4>unlike(state, prevState, deep): boolean</h4><p>Check whether current object (state) is not equal previous object (state) comparing values of their fields.</p>
+<pre class="prettyprint source lang-js"><code>import { unlike } from 'listate/extra';
+unlike({a: 1, b: 2}, {a: 1, b: 2});   // false
+unlike({a: 1, b: {c: 3}}, {a: 1, b: {c: 3}});   // true
+unlike({a: 1, b: {c: 3}}, {a: 1, b: {c: 3}}, true);   // false</code></pre><h4>unlikeDeep(state, prevState): boolean</h4><p>Check whether current object (state) is not equal previous object (state) deeply comparing values of their fields.</p>
+<p>The same as <code>unlike(state, prevState, true)</code>.</p>
+<h4>listen(store, listener): Function</h4><p>Add/register state change listener for the given store.</p>
+<p>It is a wrap around base <code>listate.listen</code> that supports enhanced listener settings.</p>
 <p>See <code>doc</code> folder for details.</p>
 <h2>Contributing <a name="contributing"></a> <a href="#start">&#x2191;</a></h2><p>In lieu of a formal styleguide, take care to maintain the existing coding style.
 Add unit tests for any new or changed functionality.
@@ -288,7 +393,7 @@ Lint and test your code.</p>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-06-03T15:36:19+03:00
+		on 2017-06-19T23:43:37+03:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -13,6 +13,10 @@
         "umd": {
             "plugins": [
                 ["transform-es2015-modules-umd", {
+                    "globals": {
+                        "extra": "listate.extra"
+                    },
+                    "exactGlobals": true,
                     "loose": true
                 }]
             ]

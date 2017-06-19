@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>listate Module: listate</title>
+	<title>listate Global</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -37,6 +37,13 @@
 				</ul>
 			</li>
 			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#listen">listen</a></li>
+				</ul>
+			</li>
+			
 		</ul>
         
             <div class="col-sm-3 col-md-3">
@@ -65,10 +72,15 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: listate</h1>
+	<h1 class="page-title">Global</h1>
 <section>
 
 <header>
+    
+        <h2>
+        
+        </h2>
+        
     
 </header>
 
@@ -76,8 +88,6 @@
 <article>
     <div class="container-overview">
     
-        
-            <div class="description"><p>Library for listening on changes of Redux store state.</p></div>
         
 
         
@@ -110,16 +120,6 @@
 
 
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="listate.js.html">listate.js</a>,
-				 <a href="listate.js.html#sunlight-1-line-11">line 11</a>
-			</li>
-		</ul>
-	</dd>
 	
 
 	
@@ -153,194 +153,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".baseWhen"><span class="type-signature">&lt;static> </span>baseWhen(state, prevState)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Check whether current value (state) is not equal previous value (state).</p>
-<p>Uses <code>!==</code> for comparison.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>state</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A current value (state).</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>prevState</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A previous value (state).</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="listate.js.html">listate.js</a>,
-				 <a href="listate.js.html#sunlight-1-line-65">line 65</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p><code>true</code> if current value is not equal previous value.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".listen"><span class="type-signature">&lt;static> </span>listen(store, listener)</h4>
+    <h4 class="name" id="listen"><span class="type-signature"></span>listen(store, listener)</h4>
     
     
 </dt>
@@ -804,49 +617,33 @@
     
 </dd>
 
-        </dl>
-    
-
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-
-        <dl>
-                
+        
+            
 <hr>
-<dt class="name" id="~HandleParam">
-    <h4 id="~HandleParam">HandleParam</h4>
-
+<dt>
+    <h4 class="name" id="module:listate/extra"><span class="type-signature"></span>module:listate/extra(store, listener)</h4>
+    
     
 </dt>
 <dd>
+
     
     <div class="description">
-        <p>Parameter that is passed when calling the listener.</p>
+        <p>Add/register state change listener for the given store.</p>
+<p>It is a wrap around module:listate.listate that supports enhanced listener settings.</p>
     </div>
     
 
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Object</span>
 
-
-
-            </li>
-        </ul>
     
 
     
-<dl class="details">
     
+        <h5>Parameters:</h5>
+        
 
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -864,150 +661,6 @@
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>current</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The current state or a part of the current state if <code>filter</code> is set.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The auxiliary data (value of <code>listener.data</code> parameter).</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dispatch</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Reference to <code>dispatch</code> method of the store.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>prev</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">any</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The previous state or a part of the previous state if <code>filter</code> is set.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>prevState</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The previous state.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>state</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The current state.</p></td>
-        </tr>
-
     
 
         <tr>
@@ -1029,20 +682,23 @@
 
             
 
-            <td class="description last"><p>The store for which listener is registered.</p></td>
+            <td class="description last"><p>Store for which listener should be added/registered.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>unlisten</code></td>
+                <td class="name"><code>listener</code></td>
             
 
             <td class="type">
             
                 
 <span class="param-type">function</span>
+|
+
+<span class="param-type">object</span>
 
 
 
@@ -1053,102 +709,13 @@
 
             
 
-            <td class="description last"><p>The function that removes/unsubscribes the listener.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="listate.js.html">listate.js</a>,
-				 <a href="listate.js.html#sunlight-1-line-30">line 30</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-            
+            <td class="description last"><p>Specifies listener that should be called on a state change.
+     Can be a function or an object that defines listener settings/details.
+     Settings are the same as for module:listate~listate with the following exceptions.</p>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
                 
-<hr>
-<dt class="name" id="~Store">
-    <h4 id="~Store">Store</h4>
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Store object.</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Object</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1158,7 +725,11 @@
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -1170,13 +741,22 @@
 
         <tr>
             
-                <td class="name"><code>dispatch</code></td>
+                <td class="name"><code>filter</code></td>
             
 
             <td class="type">
             
                 
+<span class="param-type">Array</span>
+|
+
 <span class="param-type">function</span>
+|
+
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
 
 
 
@@ -1184,17 +764,38 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
+                
+
+                
+                </td>
             
 
-            <td class="description last"><p>Dispatches an action to trigger a state change.</p></td>
+            
+                <td class="default">
+                
+                    (state) => state
+                
+                </td>
+            
+
+            <td class="description last"><p>Specifies which state part will be used inside <code>when</code> to determine
+     whether the listener should be called.
+     When an array or a object is passed, the used filter will be result of
+     <a href="module-listate_extra.html#.getPartFilter">getPartFilter(listener.filter)</a>.
+     When a string is passed, the used filter will be result of
+     <a href="module-listate_extra.html#.getFieldFilter">getFieldFilter(listener.filter)</a>.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>getState</code></td>
+                <td class="name"><code>when</code></td>
             
 
             <td class="type">
@@ -1208,41 +809,44 @@
             </td>
 
             
-
-            
-
-            <td class="description last"><p>Returns the current state.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>subscribe</code></td>
-            
-
-            <td class="type">
-            
+                <td class="attributes">
                 
-<span class="param-type">function</span>
+                    &lt;optional><br>
+                
 
+                
 
-
-            
-            </td>
-
-            
-
+                
+                </td>
             
 
-            <td class="description last"><p>Adds a change listener.</p></td>
+            
+                <td class="default">
+                
+                    unlike
+                
+                </td>
+            
+
+            <td class="description last"><p>Function to determine whether the listener should be called.
+     By default <a href="module-listate_extra.html#.unlike">unlike</a> is used.</p></td>
         </tr>
 
     
     </tbody>
 </table>
-</dl>
 
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
     
 
 	
@@ -1276,8 +880,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="listate.js.html">listate.js</a>,
-				 <a href="listate.js.html#sunlight-1-line-17">line 17</a>
+				<a href="extra.js.html">extra.js</a>,
+				 <a href="extra.js.html#sunlight-1-line-297">line 297</a>
 			</li>
 		</ul>
 	</dd>
@@ -1292,9 +896,47 @@
 
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>A function that removes/unsubscribes the listener.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
 </dd>
 
-            </dl>
+        </dl>
+    
+
     
 
     
@@ -1346,7 +988,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-06-19T23:43:37+03:00
+		on 2017-06-11T12:51:41+03:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

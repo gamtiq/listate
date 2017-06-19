@@ -1,40 +1,12 @@
 import { expect } from 'chai';
-import { createStore } from 'redux';
+
+import { baseListener, checkListen, getListenerCounter, getStore, initState, resetListenerCounter } from './_helper';
 
 import listen, * as api from '../src/listate';
 
 describe('listate', function listateTestSuite() {
 
     /* eslint-disable no-magic-numbers */
-
-    const initState = {
-        counter: 0,
-        data: {},
-        map: {}
-    };
-
-    // eslint-disable-next-line require-jsdoc
-    function reducer(state, action) {
-        const { payload } = action;
-        let newState;
-        switch (action.type) {
-            case 'INC':
-                newState = Object.assign({}, state);
-                newState.counter += typeof payload === 'number'
-                                        ? payload
-                                        : 1;
-
-                return newState;
-            case 'SET':
-                newState = Object.assign({}, state);
-                newState.map = Object.assign({}, state.map);
-                newState.map[payload.key] = payload.value;
-
-                return newState;
-            default:
-                return state;
-        }
-    }
 
     describe('baseWhen(state, prevState)', () => {
         const { baseWhen } = api;
@@ -67,51 +39,11 @@ describe('listate', function listateTestSuite() {
     });
 
     describe('listen(store, listener)', () => {
-        let listenerCounter;
-
-        beforeEach(() => {
-            listenerCounter = 0;
-        });
-
-        // eslint-disable-next-line require-jsdoc
-        function baseListener() {
-            listenerCounter++;
-        }
-
-        // eslint-disable-next-line require-jsdoc
-        function getListenerCounter() {
-            return listenerCounter;
-        }
+        beforeEach(resetListenerCounter);
 
         // eslint-disable-next-line require-jsdoc
         function check(settings) {
-            listenerCounter = 0;
-            const store = settings.store || createStore(reducer, initState);
-            // eslint-disable-next-line no-nested-ternary
-            const actionList = Array.isArray(settings.action)
-                                ? settings.action
-                                : (settings.action
-                                    ? [settings.action]
-                                    : []);
-            const len = actionList.length;
-
-            if (settings.listener && ! settings.listener.handle) {
-                settings.listener.handle = baseListener;
-            }
-            listen(store, settings.listener || baseListener);
-
-            for (let i = 0; i < len; i++) {
-                store.dispatch( actionList[i] );
-            }
-
-            expect( (settings.getResult || getListenerCounter)() )
-                .equal( ('result' in settings)
-                            ? settings.result
-                            : 0 );
-            
-            return {
-                store
-            };
+            return checkListen(Object.assign({listen}, settings));
         }
 
         it('should call listener', () => {
@@ -315,17 +247,17 @@ describe('listate', function listateTestSuite() {
         });
 
         it('should return function that can be used to remove listener', () => {
-            const store = createStore(reducer, initState);
+            const store = getStore();
             const unlisten = listen(store, baseListener);
 
             store.dispatch({type: 'INC'});
-            expect( listenerCounter )
+            expect( getListenerCounter() )
                 .equal( 1 );
 
             unlisten();
 
             store.dispatch({type: 'INC'});
-            expect( listenerCounter )
+            expect( getListenerCounter() )
                 .equal( 1 );
         });
 

@@ -27,6 +27,7 @@ Library to listen/observe/watch changes of Redux store state.
 ### AMD, &lt;script&gt;
 
 Use `dist/listate.js` or `dist/listate.min.js` (minified version).
+Use `dist/extra.js` or `dist/extra.min.js` (minified version) to apply extra functions.
 
 ## Usage <a name="usage"></a> [&#x2191;](#start)
 
@@ -34,36 +35,48 @@ Use `dist/listate.js` or `dist/listate.min.js` (minified version).
 
 ```js
 import listen from 'listate';
+// Or if you need extra functionality
+import extListen from 'listate/extra';
 ```
 
 ### Node
 
 ```js
 const listen = require('listate').listen;
+// Or if you need extra functionality
+const extListen = require('listate/extra').listen;
 ```
 
 ### [Duo](http://duojs.org)
 
 ```js
 const listen = require('gamtiq/listate').listen;
+// Or if you need extra functionality
+const extListen = require('gamtiq/listate/extra').listen;
 ```
 
 ### AMD
 
 ```js
-define(['path/to/dist/listate.js'], function(listate) {
+define(['path/to/dist/listate.js', 'path/to/dist/extra.js'], function(listate, extra) {
     const listen = listate.listen;
+    // Import extra.js if you need extra functionality
+    const extListen = extra.listen;
 });
 ```
 
 ### Bower, &lt;script&gt;
 
 ```html
-<!-- Use bower_components/listate/dist/listate.js if the library was installed by Bower -->
+<!-- Use bower_components/listate/dist/listate.js and bower_components/listate/dist/extra.js if the library was installed by Bower -->
 <script type="text/javascript" src="path/to/dist/listate.js"></script>
+<!-- Or if you need extra functionality -->
+<script type="text/javascript" src="path/to/dist/extra.js"></script>
 <script type="text/javascript">
     // listate is available via listate field of window object
     const listen = listate.listen;
+    // Extra functionality is available inside extra namespace
+    const extListen = listate.extra.listen;
 </script>
 ```
 
@@ -72,6 +85,7 @@ define(['path/to/dist/listate.js'], function(listate) {
 ```js
 import { createStore } from 'redux';
 import listen from 'listate';
+import extListen from 'listate/extra';
 
 const initState = {
     user: null,
@@ -135,6 +149,14 @@ listen(store, {
         
     }
 });
+extListen(store, {
+    filter: {s: 'section', main: 'map.main'},
+    handle: (data) => {
+        console.log('extListen: data.prev -', data.prev);
+        console.log('extListen: data.current -', data.current);
+        
+    }
+});
 ...
 store.dispatch({
     type: 'AUTH',
@@ -160,17 +182,29 @@ store.dispatch({
     type: 'SELECT_SECTION',
     payload: 'news'
 });
+...
+store.dispatch({
+    type: 'SET_SECTION',
+    payload: {
+        key: 'main',
+        value: {
+            content: 'text'
+        }
+    }
+});
 ```
 
 ## API <a name="api"></a> [&#x2191;](#start)
 
-### baseWhen(state, prevState): boolean
+### Base functionality (listate, dist/listate.js)
+
+#### baseWhen(state, prevState): boolean
 
 Checks whether current value (state) is not equal previous value (state).
 
 Returns value of the following comparison: `state !== prevState`.
 
-### listen(store, listener): Function
+#### listen(store, listener): Function
 
 Adds/registers state change listener for the given store.
 
@@ -209,6 +243,124 @@ An object with the following fileds will be passed as parameter into the listene
 * `store: object` - The store for which listener is registered.
 * `dispatch: Function` - Reference to `dispatch` method of the store.
 * `unlisten: Function` - The function that removes/unsubscribes the listener.
+
+### Extra functionality (listate/extra, dist/extra.js)
+
+#### getPathValue(obj, path): any
+
+Return value of specified field path inside given object.
+
+```js
+import { getPathValue } from 'listate/extra';
+const obj = {
+    a: {
+        b: {
+           c: 'value'
+        },
+        d: true
+    },
+    e: 4,
+    f: [1, 'z', null]
+};
+getPathValue(obj, 'a.b.c');   // 'value'
+getPathValue(obj, 'a.c');   // undefined
+```
+
+#### getObjectPart(source, parts): object
+
+Create an object containing specified parts of the given object.
+
+```js
+import { getObjectPart } from 'listate/extra';
+const obj = {
+    a: {
+        b: {
+           c: 'value',
+           d: true
+        },
+        e: 4,
+        f: [1, 'z', null]
+    },
+    g: 7,
+    h: {
+        i: false,
+        j: 0
+    },
+    k: 'king',
+    l: 'last'
+};
+getObjectPart(obj, {f1: 'a.b.d', f2: 'a.f.1', f3: 'g', f4: 'h.j'});   // {f1: true, f2: 'z', f3: 7, f4: 0}
+```
+
+#### getFieldFilter(path): Function
+
+Return a function that extracts value of the specified field path inside a given object.
+
+```js
+import { getFieldFilter } from 'listate/extra';
+const filter = getFieldFilter('a.d');
+const obj = {
+    a: {
+        b: {
+           c: 'value'
+        },
+        d: 17
+    },
+    e: 4,
+    f: [1, 'z', null]
+};
+filter(obj);   // 17
+```
+
+#### getPartFilter(parts): Function
+
+Return a function that creates an object containing the specified parts of a given object.
+
+```js
+import { getPartFilter } from 'listate/extra';
+const filter = getPartFilter({f1: 'a.b.c', f2: 'h.j', f3: 'k'});
+const obj = {
+    a: {
+        b: {
+           c: 'value',
+           d: true
+        },
+        e: 4,
+        f: [1, 'z', null]
+    },
+    g: 7,
+    h: {
+        i: false,
+        j: 0
+    },
+    k: 'king',
+    l: 'last'
+};
+filter(obj);   // {f1: 'value', f2: 0, f3: 'king'}
+```
+
+#### unlike(state, prevState, deep): boolean
+
+Check whether current object (state) is not equal previous object (state) comparing values of their fields.
+
+```js
+import { unlike } from 'listate/extra';
+unlike({a: 1, b: 2}, {a: 1, b: 2});   // false
+unlike({a: 1, b: {c: 3}}, {a: 1, b: {c: 3}});   // true
+unlike({a: 1, b: {c: 3}}, {a: 1, b: {c: 3}}, true);   // false
+```
+
+#### unlikeDeep(state, prevState): boolean
+
+Check whether current object (state) is not equal previous object (state) deeply comparing values of their fields.
+
+The same as `unlike(state, prevState, true)`.
+
+#### listen(store, listener): Function
+
+Add/register state change listener for the given store.
+
+It is a wrap around base `listate.listen` that supports enhanced listener settings.
 
 See `doc` folder for details.
 
