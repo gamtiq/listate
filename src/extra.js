@@ -292,7 +292,7 @@ export function unlikeDeep(state, prevState) {
  * @param {Array | Function | object | string} [listener.filter=(state) => state]
  *      Specifies which state part will be used inside `when` to determine
  *      whether the listener should be called.
- *      When an array or a object is passed, the used filter will be result of
+ *      When an array or an object is passed, the used filter will be result of
  *      {@link module:listate/extra.getPartFilter getPartFilter(listener.filter)}.
  *      When a string is passed, the used filter will be result of
  *      {@link module:listate/extra.getFieldFilter getFieldFilter(listener.filter)}.

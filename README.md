@@ -360,7 +360,12 @@ The same as `unlike(state, prevState, true)`.
 
 Add/register state change listener for the given store.
 
-It is a wrap around base `listate.listen` that supports enhanced listener settings.
+It is a wrap around base `listate.listen` that supports the following enhanced listener settings:
+
+* `listener.filter`.
+When an array or an object is passed, the used filter will be result of `getPartFilter(listener.filter)`.
+When a string is passed, the used filter will be result of `getFieldFilter(listener.filter)`.
+* `listener.when`. By default `unlike` is used.
 
 See `doc` folder for details.
 
