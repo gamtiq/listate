@@ -1,3 +1,7 @@
+### 1.0.1 / 2017-06-24
+
+* Add ability to run listener once (`listener.once` parameter/setting).
+
 ### 1.0.0 / 2017-06-20
 
 * Add extra functionality (`listate/extra`).
