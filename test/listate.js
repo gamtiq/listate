@@ -68,6 +68,28 @@ describe('listate', function listateTestSuite() {
             });
         });
 
+        it('should call listener once', () => {
+            check({
+                listener: {
+                    filter: (state) => state.counter,
+                    once: true
+                },
+                action: [
+                    {
+                        type: 'INC'
+                    },
+                    {
+                        type: 'INC',
+                        payload: 2392
+                    },
+                    {
+                        type: 'INC'
+                    },
+                ],
+                result: 1
+            });
+        });
+
         it('should use function as a listener', () => {
             check({
                 action: [
@@ -543,6 +565,32 @@ describe('listate', function listateTestSuite() {
                         .equal( 1 );
                     done();
                 }, 700);
+            });
+
+            it('should call listener once because of "once" setting', (done) => {
+                const { store } = check({
+                    listener: {
+                        delay: 100,
+                        once: true
+                    },
+                    action: {
+                        type: 'INC'
+                    },
+                });
+
+                setTimeout(() => {
+                    store.dispatch({type: 'INC'});
+                }, 150);
+
+                setTimeout(() => {
+                    store.dispatch({type: 'INC'});
+                }, 300);
+
+                setTimeout(() => {
+                    expect( getListenerCounter() )
+                        .equal( 1 );
+                    done();
+                }, 450);
             });
 
             it('should call listener with fixed parameter', (done) => {

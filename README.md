@@ -118,9 +118,9 @@ const store = createStore(reducer, initState);
 listen(store, {
     data: 'main',
     filter: (state) => state.user,
+    // One-time listener
+    once: true,
     handle: (data) => {
-        // One-time listener
-        data.unlisten();
         // Dispatch any action
         data.dispatch({
             type: 'SELECT_SECTION',
@@ -222,6 +222,7 @@ only the last one will be applied after the timeout.
 * `listener.filter: (state) => state.part` (optional) - Function (selector) to extract state part
 which will be used inside `when` to determine whether the listener should be called.
 By default the entire state will be used.
+* `listener.once: boolean` (optional) - Whether the listener should be called just once (by default `false`).
 * `listener.when: (current, prev, data) => boolean` (optional) - Function to determine
 whether the listener should be called. By default `baseWhen` is used.
 The listener will be called if the function returns true.

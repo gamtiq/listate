@@ -71,10 +71,13 @@ function baseWhen(state, prevState) {
     return state !== prevState;
 }
 
-// eslint-disable-next-line require-jsdoc
-function run(func, context, param) {
+// eslint-disable-next-line max-params, require-jsdoc
+function run(func, context, param, once) {
     return function () {
         func.call(context, param);
+        if (once) {
+            param.unlisten();
+        }
     };
 }
 
@@ -116,6 +119,8 @@ function run(func, context, param) {
  * @param {Function} [listener.filter=(state) => state]
  *      Function (selector) to extract state part which will be used inside `when` to determine
  *      whether the listener should be called. By default the entire state will be used.
+ * @param {boolean} [listener.once=false]
+ *      Whether the listener should be called just once.
  * @param {Function} [listener.when=baseWhen]
  *      Function to determine whether the listener should be called.
  *      The listener will be called if the function returns true.
@@ -133,7 +138,8 @@ function listen(store, listener) {
     var settings = typeof listener === 'function' ? { handle: listener } : listener;
     var handle = settings.handle,
         data = settings.data,
-        filter = settings.filter;
+        filter = settings.filter,
+        once = settings.once;
 
     var context = settings.context || null;
     var delay = typeof settings.delay === 'number' ? settings.delay : -1;
@@ -160,9 +166,12 @@ function listen(store, listener) {
             prev = current;
             if (delay < 0) {
                 handle.call(context, param);
+                if (once) {
+                    unlisten();
+                }
             } else {
                 clearTimeout(timeoutId);
-                timeoutId = setTimeout(run(handle, context, param), delay);
+                timeoutId = setTimeout(run(handle, context, param, once), delay);
             }
         } else {
             prev = current;
