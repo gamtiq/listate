@@ -120,7 +120,7 @@ listen(store, {
     filter: (state) => state.user,
     // One-time listener
     once: true,
-    handle: (data) => {
+    handle(data) {
         // Dispatch any action
         data.dispatch({
             type: 'SELECT_SECTION',
@@ -134,27 +134,28 @@ listen(store, {
     when: (current, prev) => current !== prev && current !== 'exit',
     // Call the listener no more frequently than once per second
     delay: 1000,
-    handle: (data) => {
+    handle(data) {
         // data.current === state.section
         localStorage.setItem('selectedSection', data.current);
         console.log('Saved section: ', data.current);
     }
 });
 listen(store, {
+    description: 'map change listener',
+    context: true,
     filter: (state) => state.map,
     when: (current, prev, data) => current.stat && data.state.user && data.state.section === 'video',
-    handle: (data) => {
+    handle(data) {
         console.log('data.prev:', data.prev);   // {main: {}}
         console.log('data.current:', data.current);   // {main: {}, stat: {a: 1}}
-        
+        console.log('this.description:', this.description);   // map change listener
     }
 });
 extListen(store, {
     filter: {s: 'section', main: 'map.main'},
-    handle: (data) => {
+    handle(data) {
         console.log('extListen: data.prev -', data.prev);
         console.log('extListen: data.current -', data.current);
-        
     }
 });
 ...
@@ -214,11 +215,11 @@ Arguments:
 * `listener: Function | object` - Specifies listener that should be called on a state change.
 Can be a function or an object that defines listener settings/details.
 * `listener.handle: Function` - Listener that should be called on a state change.
-* `listener.context: object` (optional) - Object that should be used as `this` value when calling the listener.
+* `listener.context: boolean | object` (optional) - Specifies object that should be used as `this` value when calling the listener.
 * `listener.data: any` (optional) - Any data that should be passed into the listener.
 * `listener.delay: number` (optional) - Specifies that listener should be called after the given number of milliseconds
 have elapsed. Works similar to `debounce`: when several requests for the listener call arrive during the specified period
-only the last one will be applied after the timeout.
+only the last one will be applied after the timeout. `0` means that the listener should be called asynchronuosly.
 * `listener.filter: (state) => state.part` (optional) - Function (selector) to extract state part
 which will be used inside `when` to determine whether the listener should be called.
 By default the entire state will be used.
@@ -376,5 +377,5 @@ Add unit tests for any new or changed functionality.
 Lint and test your code.
 
 ## License <a name="license"></a> [&#x2191;](#start)
-Copyright (c) 2017 Denis Sikuler  
+Copyright (c) 2017-2018 Denis Sikuler  
 Licensed under the MIT license.

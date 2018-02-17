@@ -2,7 +2,7 @@
  * listate
  * https://github.com/gamtiq/listate
  *
- * Copyright (c) 2017 Denis Sikuler
+ * Copyright (c) 2017-2018 Denis Sikuler
  * Licensed under the MIT license.
  */
 
@@ -101,8 +101,10 @@ function run(func, context, param, once) {
  *      Can be a function or an object that defines listener settings/details.
  * @param {Function} listener.handle
  *      Listener that should be called on a state change.
- * @param {object} [listener.context]
+ * @param {boolean | object} [listener.context]
  *      Object that should be used as `this` value when calling the listener.
+ *      When `true` is passed `listener` object will be used as `this`.
+ *      False value (by default) means that `null` will be used as the context object.
  * @param {any} [listener.data]
  *      Any data that should be passed into the listener.
  * @param {number} [listener.delay]
@@ -134,7 +136,10 @@ export default function listen(store, listener) {
                         ? {handle: listener}
                         : listener;
     const { handle, data, filter, once } = settings;
-    const context = settings.context || null;
+    let context = settings.context || null;
+    if (context && typeof context !== 'object') {
+        context = listener;
+    }
     const delay = typeof settings.delay === 'number'
                     ? settings.delay
                     : -1;

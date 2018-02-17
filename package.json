@@ -13,13 +13,15 @@
     "listener",
     "subscribe",
     "subscriber",
+    "subscription",
     "handle",
     "handler",
     "observe",
     "observer",
     "monitor",
     "watch",
-    "watcher"
+    "watcher",
+    "side-effect"
   ],
   "devDependencies": {
     "babel-cli": "^6.24.1",

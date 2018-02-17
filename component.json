@@ -12,13 +12,15 @@
     "listener",
     "subscribe",
     "subscriber",
+    "subscription",
     "handle",
     "handler",
     "observe",
     "observer",
     "monitor",
     "watch",
-    "watcher"
+    "watcher",
+    "side-effect"
   ],
   "dependencies": {},
   "development": {},

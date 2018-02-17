@@ -132,6 +132,30 @@ describe('listate', function listateTestSuite() {
             });
         });
 
+        it('should call listener with listener object as context', () => {
+            const n = 10;
+            const payload = 8;
+            const obj = {
+                n,
+                context: true,
+                handle(data) {
+                    this.n += data.state.counter;
+                }
+            };
+
+            check({
+                listener: obj,
+                action: {
+                    type: 'INC',
+                    payload
+                },
+                getResult() {
+                    return obj.n;
+                },
+                result: n + payload
+            });
+        });
+
         it('should pass parameter to listener', () => {
             const suppData = {};
             let param;
