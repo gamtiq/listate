@@ -18,7 +18,7 @@
     "templates": {
         "outputSourceFiles": true,
         "systemName": "listate",
-        "copyright": "Copyright (c) 2017-2018 Denis Sikuler",
+        "copyright": "Copyright (c) 2017-2019 Denis Sikuler",
         "theme": "spacelab",
         "linenums": true
     }

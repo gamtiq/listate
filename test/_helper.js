@@ -15,8 +15,8 @@ export function reducer(state, action) {
         case 'INC':
             newState = Object.assign({}, state);
             newState.counter += typeof payload === 'number'
-                                    ? payload
-                                    : 1;
+                ? payload
+                : 1;
 
             return newState;
         case 'SET':
@@ -58,10 +58,10 @@ export function checkListen(settings) {
     const store = settings.store || getStore();
     // eslint-disable-next-line no-nested-ternary
     const actionList = Array.isArray(settings.action)
-                        ? settings.action
-                        : (settings.action
-                            ? [settings.action]
-                            : []);
+        ? settings.action
+        : (settings.action
+            ? [settings.action]
+            : []);
     const len = actionList.length;
 
     if (settings.listener && ! settings.listener.handle) {
@@ -75,8 +75,8 @@ export function checkListen(settings) {
 
     expect( (settings.getResult || getListenerCounter)() )
         .equal( ('result' in settings)
-                    ? settings.result
-                    : 0 );
+            ? settings.result
+            : 0 );
     
     return {
         store

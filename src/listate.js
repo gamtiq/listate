@@ -2,7 +2,7 @@
  * listate
  * https://github.com/gamtiq/listate
  *
- * Copyright (c) 2017-2018 Denis Sikuler
+ * Copyright (c) 2017-2019 Denis Sikuler
  * Licensed under the MIT license.
  */
 
@@ -133,28 +133,28 @@ function run(func, context, param, once) {
  */
 export default function listen(store, listener) {
     const settings = typeof listener === 'function'
-                        ? {handle: listener}
-                        : listener;
+        ? {handle: listener}
+        : listener;
     const { handle, data, filter, once } = settings;
     let context = settings.context || null;
     if (context && typeof context !== 'object') {
         context = listener;
     }
     const delay = typeof settings.delay === 'number'
-                    ? settings.delay
-                    : -1;
+        ? settings.delay
+        : -1;
     const when = settings.when || baseWhen;
     let prevState = store.getState();
     let prev = filter
-                    ? filter(prevState)
-                    : prevState;
+        ? filter(prevState)
+        : prevState;
     let timeoutId;
     
     const unlisten = store.subscribe(() => {
         const state = store.getState();
         const current = filter
-                            ? filter(state)
-                            : state;
+            ? filter(state)
+            : state;
         const param = {
             current,
             prev,

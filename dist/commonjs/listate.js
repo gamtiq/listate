@@ -10,7 +10,7 @@ exports.default = listen;
  * listate
  * https://github.com/gamtiq/listate
  *
- * Copyright (c) 2017-2018 Denis Sikuler
+ * Copyright (c) 2017-2019 Denis Sikuler
  * Licensed under the MIT license.
  */
 

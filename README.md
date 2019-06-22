@@ -47,14 +47,6 @@ const listen = require('listate').listen;
 const extListen = require('listate/extra').listen;
 ```
 
-### [Duo](http://duojs.org)
-
-```js
-const listen = require('gamtiq/listate').listen;
-// Or if you need extra functionality
-const extListen = require('gamtiq/listate/extra').listen;
-```
-
 ### AMD
 
 ```js
@@ -377,5 +369,5 @@ Add unit tests for any new or changed functionality.
 Lint and test your code.
 
 ## License <a name="license"></a> [&#x2191;](#start)
-Copyright (c) 2017-2018 Denis Sikuler  
+Copyright (c) 2017-2019 Denis Sikuler  
 Licensed under the MIT license.
