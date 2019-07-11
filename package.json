@@ -1,6 +1,6 @@
 {
   "name": "listate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Library for listening on changes of Redux store state.",
   "homepage": "https://github.com/gamtiq/listate",
   "main": "dist/commonjs/listate.js",
@@ -36,9 +36,9 @@
     "ink-docstrap": "1.3.2",
     "jsdoc": "3.6.2",
     "mocha": "6.1.4",
-    "redux": "4.0.1",
+    "redux": "4.0.4",
     "uglify-js": "3.6.0",
-    "version-bump-prompt": "^3.1.0"
+    "version-bump-prompt": "5.0.4"
   },
   "scripts": {
     "lint": "eslint --cache --max-warnings 0 \"**/*.js\"",
@@ -56,9 +56,9 @@
     "minify": "npm run minify-listate && npm run minify-extra",
     "build": "npm run build-commonjs && npm run build-umd && npm run minify",
     "all": "npm run check-all && npm run doc && npm run build",
-    "release": "bump --patch --commit --tag --all --push",
-    "release-minor": "bump --minor --commit --tag --all --push",
-    "release-major": "bump --major --commit --tag --all --push"
+    "release": "bump patch --commit --tag --all --push package.json package-lock.json bower.json",
+    "release-minor": "bump minor --commit --tag --all --push package.json package-lock.json bower.json",
+    "release-major": "bump major --commit --tag --all --push package.json package-lock.json bower.json"
   },
   "author": {
     "name": "Denis Sikuler"

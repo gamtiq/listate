@@ -1,3 +1,8 @@
+### 1.0.3 / 2019-07-11
+
+* Add types declaration files (`.d.ts`).
+* Remove `component.json`.
+
 ### 1.0.2 / 2018-02-17
 
 * Simplify usage of settings object as context (ability to set `true` for `listener.context` parameter/setting).
