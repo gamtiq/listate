@@ -70,5 +70,6 @@
   "bugs": {
     "url": "https://github.com/gamtiq/listate/issues"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "types": "./src/listate.d.ts"
 }
